@@ -34,6 +34,7 @@ func (mr *MarsRover) Process(commands string) error {
 
 	mr.wg.Add(1)
 	go func() {
+		mr.mx.Lock()
 		commandsCollection := strings.Split(commands, "")
 		for _, command := range commandsCollection {
 			switch command {
@@ -51,6 +52,7 @@ func (mr *MarsRover) Process(commands string) error {
 				processErr = InvalidCommand{}
 			}
 		}
+		mr.mx.Unlock()
 		mr.wg.Done()
 	}()
 	mr.wg.Wait()
@@ -58,36 +60,24 @@ func (mr *MarsRover) Process(commands string) error {
 }
 
 func (mr *MarsRover) turnLeft() {
-	mr.mx.Lock()
-	currentFacing := mr.direction
-	mr.direction = util.TernaryInt(currentFacing-1 < N, W, currentFacing-1)
-	mr.mx.Unlock()
+	mr.direction = util.TernaryInt(mr.direction-1 < N, W, mr.direction-1)
 }
 
 func (mr *MarsRover) turnRight() {
-	mr.mx.Lock()
-	currentFacing := mr.direction
-	mr.direction = util.TernaryInt(currentFacing+1 > W, N, currentFacing+1)
-	mr.mx.Unlock()
+	mr.direction = util.TernaryInt(mr.direction+1 > W, N, mr.direction+1)
 }
 
 func (mr *MarsRover) step() error {
-	mr.mx.Lock()
 	switch mr.direction {
 	case N:
 		mr.y++
-		mr.mx.Unlock()
 	case E:
 		mr.x++
-		mr.mx.Unlock()
 	case S:
 		mr.y--
-		mr.mx.Unlock()
 	case W:
 		mr.x--
-		mr.mx.Unlock()
 	default:
-		mr.mx.Unlock()
 		return InvalidDirection{}
 	}
 	return nil
