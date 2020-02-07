@@ -23,7 +23,6 @@ func TestMarsRover(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "5 1 E", sut.String())
 
-
 }
 
 func TestInvalidCommand_Error(t *testing.T) {

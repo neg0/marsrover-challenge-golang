@@ -13,7 +13,7 @@ type MarsRover struct {
 	y         int
 	direction int
 	wg        *sync.WaitGroup
-	mx 	  	  *sync.Mutex
+	mx        *sync.Mutex
 }
 
 func NewMarsRover() MarsRover {

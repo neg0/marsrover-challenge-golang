@@ -17,3 +17,7 @@ Please run the following at the root of the repository:
 In order to run the tests please run the following at the root of the repository.
 
     ~$: go test -v ./internal/...
+
+
+#### Credits
+* Hadi Tajallaei <tajallaei@gmail.com>
